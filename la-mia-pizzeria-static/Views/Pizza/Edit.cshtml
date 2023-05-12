@@ -1,0 +1,59 @@
+﻿@model PizzaFormModel
+
+<div class="container">
+
+    <form asp-controller="Pizza" asp-action="Edit" asp-route-id="@Model.Pizza.Id"
+        method="post" novalidate>
+
+        <div class="mb-3">
+            <label>Name : </label>
+            <input asp-for="Pizza.Name" class="d-block w-100" />
+            <span asp-validation-for="Pizza.Name" class="text-danger"></span>
+        </div>
+        <div class="mb-3">
+            <label>Description : </label>
+            <input asp-for="Pizza.Description" class="d-block w-100" />
+            <span asp-validation-for="Pizza.Description" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label>Price : </label>
+            <input asp-for="Pizza.Price" class="d-block w-100" />
+            <span asp-validation-for="Pizza.Price" class="text-danger"></span>
+        </div>
+        <div class="mb-3">
+            <label>Image : </label>
+            <input asp-for="Pizza.Image" class="d-block w-100" />
+            <span asp-validation-for="Pizza.Image" class="text-danger"></span>
+        </div>
+        <div class="mb-3">
+            <label>Category : </label>
+            <select asp-for="Pizza.CategoryId" rows="10" class="d-block w-100">
+                <option value=""></option>
+                @foreach (Category category in Model.Categories)
+                {
+                    @if (Model.Pizza.CategoryId == category.Id)
+                    {
+                        <option value="@category.Id" selected>@category.Name</option>
+                    }
+                    else
+                    {
+                        <option value="@category.Id">@category.Name</option>
+                    }
+
+                }
+            </select>
+            <span asp-validation-for="Pizza.CategoryId" class="text-danger"></span>
+        </div>
+        <div class="mb-3">
+            <label>Ingredients : </label>
+            <select asp-for="SelectedIngredients" multiple="multiple" rows="10" class="d-block w-100" asp-items = "Model.Ingredients">
+            
+            </select>
+            <span asp-validation-for="SelectedIngredients" class="text-danger"></span>
+        </div>
+        <div class="text-end">
+            <input type="submit" class="btn btn-small btn-info" value="Edit">
+        </div>
+    </form>
+</div>
