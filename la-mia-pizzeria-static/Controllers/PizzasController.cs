@@ -23,5 +23,14 @@ namespace la_mia_pizzeria_static.Controllers
                 
             }
         }
+        [HttpPut("{id}")]
+        public IActionResult PizzaId(int id)
+        {
+            using(PizzaContext ctx = new PizzaContext())
+            {
+                var pizza = ctx.Pizzas.Where(p => p.Id == id).FirstOrDefault();
+                return Ok(pizza);
+            }
+        }
     }
 }
