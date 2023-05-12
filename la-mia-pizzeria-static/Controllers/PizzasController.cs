@@ -33,12 +33,12 @@ namespace la_mia_pizzeria_static.Controllers
             }
         }
         [HttpPost]
-        public IActionResult CreatePizza()
+        public IActionResult CreatePizza([FromBody] Pizza data)
         {
             using (PizzaContext context = new PizzaContext())
             {
 
-                Pizza pz = new Pizza { Name = "Prova", Description = "d d d d d d ", Image = "https://media-assets.lacucinaitaliana.it/photos/63c0401ffb4d383e74f344dd/1:1/w_4992,h_4992,c_limit/migliore%20pizza%20milano%20pizzeria.jpg", Price = 5, CategoryId = 1 };
+                Pizza pz = new Pizza { Name = data.Name, Description = data.Description, Image = data.Image, Price = data.Price, CategoryId = data.CategoryId };
            
                 context.Pizzas.Add(pz);
                 context.SaveChanges();
@@ -46,27 +46,20 @@ namespace la_mia_pizzeria_static.Controllers
             }
         }
         [HttpPut ("{id}")]
-        public IActionResult EditPizza(int id, [FromBody] PizzaFormModel data)
+        public IActionResult EditPizza(int id, [FromBody] Pizza data)
         {
             using(PizzaContext ctx = new PizzaContext())
             {
                 Pizza pizza = ctx.Pizzas.Where(p => p.Id == id).FirstOrDefault();
                 if (pizza != null)
                 {
-                    pizza.Image = data.Pizza.Image;
-                    pizza.Name = data.Pizza.Name;
-                    pizza.Description = data.Pizza.Description;
-                    pizza.Price = data.Pizza.Price;
-                    pizza.CategoryId = data.Pizza.CategoryId;
+                    pizza.Image = data.Image;
+                    pizza.Name = data.Name;
+                    pizza.Description = data.Description;
+                    pizza.Price = data.Price;
+                    pizza.CategoryId = data.CategoryId;
                     pizza.Ingredients.Clear();
-                    foreach (string idingredient in data.SelectedIngredients)
-                    {
-                        int intidIngredient = int.Parse(idingredient);
-                        Ingredient ing = ctx.Ingredients.Where(i => i.Id == intidIngredient).FirstOrDefault();
-                        pizza.Ingredients.Add(ing);
-
-                    }
-
+       
                     ctx.Pizzas.Update(pizza);
                     ctx.SaveChanges();
                     return Ok();
